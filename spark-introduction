@@ -1,0 +1,61 @@
+
+spark           -  spark is a distributed system distributed system that was designed to process 
+                   a large volume of data efficiently and quickly.  it supports in-memory processing as well
+
+Spark clusters  -  spark cluster consist of group of machines.
+                   
+Yarn, Meosos    -  These are known as resource management system. These system efficiently manages the group of machines or systems.
+                   It consis of 2 components Cluster Manager and Worker
+                   
+Cluster Manager -  It knows about how many worker nodes are active and where they are located, how much memory earch worker have and
+                   how many CPU core each worker node has.
+                   the main responsibility of Cluster Manager is plan and assign work to worker node
+                   
+Worker          -  Worker node offers Memory and CPU information to Cluster Manager
+
+Spark Application -  Any spark application consist of 2 components 
+                     1 is data processing logic code using spark api and 
+                     2 is Spark Driver
+                     
+Spark Driver      -  The Spark driver is the central coordinator of a Spark application.
+                     It interacts with a cluster manager to figure out which machines(worker node) to run the data processing logic on.
+                     For each one of those machines(workder node), the Spark driver requests that the cluster manager launch a process 
+                     called the Spark executor. 
+                     Another important job of the Spark driver is to manage and distribute Spark tasks onto each executor on behalf of 
+                     the application.
+                     It will coordinate with each executor and collect and result and merge as well when data processing logic to store 
+                     final result in HDFS
+                     
+Spark Session      - its entry point of Spark application 
+
+
+Spark Executor     - Each Spark executor is a JVM process and is exclusively allocated to a specific Spark application. 
+                     The lifetime of a Spark executor is the duration of a Spark application, 
+                     which could run for a few minutes or for a few days. 
+                     Since Spark applications are running in separate Spark executors, 
+                     sharing data between them will require writing the data to an external storage system like HDFS.
+                     it executes the spark task.
+                     Spark executor having aditional responsiblity of caching portion of data or writing into disk
+                     when its advised by data processing logic (spark code)
+                     
+Spark Task         - Each task is executed on a separate CPU core in Spark Executor. if one Executor having 2 core then 2 task
+                     task can run parrelly. 
+                     
+Spark Driver and Executor  - Spark employs a master-slave architecture, where the Spark driver is the master 
+                             and the Spark executor is the slave. 
+                             Each of these components runs as an independent process on a Spark cluster. 
+                             A Spark application consists of one and only one Spark driver and one or more Spark executors. 
+                             Playing the slave role, each Spark executor does what it is told, 
+                             which is to execute the data processing logic in the form of tasks. 
+                             
+                             
+                             
+Spark application launch or sumbit :-  At the time of launching a Spark application, 
+                                       you can request how many Spark executors an application needs and how much memory 
+                                       and the number of CPU cores each executor should have. 
+
+                     
+                     
+                   
+                   
+                   
