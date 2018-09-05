@@ -1,6 +1,10 @@
 
 spark           -  spark is a distributed system distributed system that was designed to process 
                    a large volume of data efficiently and quickly.  it supports in-memory processing as well
+                   
+RDD             - The technical definition of an RDD is that it is an immutable 
+                  and fault-tolerant collection of objects partitioned across a cluster 
+                  that can be manipulated in parallel. 
 
 Spark clusters  -  spark cluster consist of group of machines.
                    
@@ -50,9 +54,16 @@ Spark Driver and Executor  - Spark employs a master-slave architecture, where th
                              
                              
                              
-Spark application launch or sumbit :-  At the time of launching a Spark application, 
+Spark application launch or sumbit :-  At the time of launching or submitting a Spark application on Spark cluster, 
                                        you can request how many Spark executors an application needs and how much memory 
                                        and the number of CPU cores each executor should have. 
+                                       
+                                       
+dataframes :- A DataFrame is effectively a distributed collection of data organized into named columns.
+              DataFrame is that it is conceptually equivalent to a table in a relational database.
+                                       
+                                       
+                                       
 
                      
                      
