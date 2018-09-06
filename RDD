@@ -1,0 +1,2 @@
+RDD :-   resilient distributed datasets (RDDs), its immutable, fault tolerant collection of objects spreded across spark cluster and
+         
