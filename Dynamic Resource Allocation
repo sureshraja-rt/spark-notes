@@ -63,5 +63,14 @@ Graceful Decommission of Executors :
                   To mitigate this, by default executors containing cached data are never removed. 
                   You can configure this behavior with spark.dynamicAllocation.cachedExecutorIdleTimeout.
                   
+                  
+  What is External Shuffle Service
+  
+         At the suffle time executors will fetch required files from others and perform shuffle. In dynamic resource allocation model
+         executors will be removed while application running based on executors idle time. this may lead to recomputation of executor 
+         state and increase latency.
+         when External Shuffle Service is enabled and when one executor requrire files then it will be fetched from this service not
+         from other executor by this way it helps to remove the idle executor without problem.
+                  
                  
                   
