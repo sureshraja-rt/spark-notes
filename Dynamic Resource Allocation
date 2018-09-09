@@ -1,0 +1,67 @@
+Dynamic Resource Allocation : 
+
+            1. Number of task has been decided based on block size. if block size is 200 then 200 task are required. Static allocation
+            with fixed number of executors, cores per executors and memeory per executor may not be good solution when there are 
+            multiple users submitting job in cluster.
+            
+            2. In Dynamic Resource Allocation Spark should remove executors when they are no longer used and 
+            acquire executors when they are needed.
+            
+            3. There are 2 types of policy which will either remove or add executors 1. Request policy and 2 is Remove policy
+            
+            
+            Request Policy : 
+            
+                 When there are number of pending task has to scheduled then spark application with dynamic resouce allocation 
+                 enabled will request additional executors.
+                 
+                 Spark requests executors in rounds. The actual request is triggered when there have been 
+                 pending tasks for spark.dynamicAllocation.schedulerBacklogTimeout seconds, and then triggered again 
+                 every spark.dynamicAllocation.sustainedSchedulerBacklogTimeout seconds thereafter if the queue of pending tasks persists.
+                 
+                 Additionally, the number of executors requested in each round increases exponentially from the previous round. 
+                 For instance, an application will add 1 executor in the first round, and then 2, 4, 8 and so on executors 
+                 in the subsequent rounds.
+                 
+           Remove Policy :
+           
+                  Spark application will check how long an excetor is idle then remove it.
+                  A Spark application removes an executor when it has been idle for 
+                  more than spark.dynamicAllocation.executorIdleTimeout seconds.
+                  
+
+Graceful Decommission of Executors : 
+
+                  Before dynamic allocation, a Spark executor exits either on failure or when the associated application has also exited.
+                  Before application exit shuffle task may happen between executors then at the end all executors will be removed.
+                  Here Executor state has been safely handled. 
+                  
+                  
+                  With dynamic allocation, however, the application is still running when an executor is explicitly removed. 
+                  If the application attempts to access state stored in or written by the executor, 
+                  it will have to perform a recompute the state. This condition cause high latency. 
+                  Thus, Spark needs a mechanism to decommission an executor gracefully by preserving its state before removing it.
+                  
+                  Below is the scenario where we have to handle graceful decomission of executors
+                  
+                  This requirement is especially important for shuffles. 
+                  During a shuffle, the Spark executor first writes its own map outputs locally to disk, 
+                  and then acts as the server for those files when other executors attempt to fetch them. 
+                  In the event of stragglers, which are tasks that run for much longer than their peers, 
+                  dynamic allocation may remove an executor before the shuffle completes, 
+                  in which case the shuffle files written by that executor must be recomputed unnecessarily.
+                  
+                  The solution for preserving shuffle files is to use an external shuffle service, 
+                  also introduced in Spark 1.2. 
+                  This service refers to a long-running process that runs on each node of your cluster independently 
+                  of your Spark applications and their executors. 
+                  If the service is enabled, Spark executors will fetch shuffle files from the service instead of from each other. 
+                  This means any shuffle state written by an executor may continue to be served beyond the executor’s lifetime.
+                  
+                  In addition to writing shuffle files, executors also cache data either on disk or in memory. 
+                  When an executor is removed, however, all cached data will no longer be accessible. 
+                  To mitigate this, by default executors containing cached data are never removed. 
+                  You can configure this behavior with spark.dynamicAllocation.cachedExecutorIdleTimeout.
+                  
+                 
+                  
