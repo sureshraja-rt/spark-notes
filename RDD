@@ -1,2 +1,28 @@
-RDD :-   resilient distributed datasets (RDDs), its immutable, fault tolerant collection of objects spreded across spark cluster and
+RDD :-   The technical definition of an RDD is that it is an immutable 
+         and fault-tolerant collection of objects partitioned across a cluster 
+         that can be manipulated in parallel. 
          
+         
+RDD operations  :-   There are 2 types of operations transformations and actions
+
+                     transformations :-   transformations are lazy and return another RDD
+                     
+                     Action          :-   Actions are egar(immediate) and return some result or write to disk
+                     
+Creating RDDs   :-   There are three ways to create an RDD
+
+                     1. The first way to create an RDD is to parallelize an object collection, 
+                     meaning converting it to a distributed dataset that can be operated in parallel
+                     
+                            val stringList = Array("Spark is awesome","Spark is cool")
+                            val stringRDD = spark.sparkContext.parallelize(stringList)
+                     
+                     2. The second way to create an RDD is to read a dataset from a storage system, 
+                     which can be a local computer file system, HDFS, Cassandra, Amazon S3, and so on
+                     
+                            val fileRDD = spark.sparkContext.textFile("/tmp/data.txt")
+                            
+                            
+                     3. The third way to create an RDD is by invoking one of the transformation operations on an existing RDD.
+                     
+                     
