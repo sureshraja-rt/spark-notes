@@ -1,0 +1,87 @@
+Difference between DataFrame and DataSet 
+
+      A Dataset is a strongly typed, immutable collection of data. Similar to a DataFrame, 
+      the data in a Dataset is mapped to a defined schema.
+      
+      Each row in a Dataset is represented by a user-defined object so that you can refer to an individual column as a member variable 
+      of that object. This provides you with compile-type safety.
+      
+      A Dataset has helpers called encoders, which are smart and efficient encoding utilities that convert data 
+      inside each user-defined object into a compact binary format. This translates into a reduction of memory usage 
+      if and when a Dataset is cached in memory as well as a reduction in the number of bytes that Spark needs to 
+      transfer over a network during the shuffling process.
+      
+      
+What is temporary views
+
+      We can register DataFrame or Dataset as temprorary view by using createOrReplaceTempView and then we can usee sql to 
+      query on DataFrame or DataSet which are registered as temporary views
+      
+What are the different types of scopes available
+
+      There are 2 different types of scopes are available
+      
+      1. Sesion level -  When a DataFrame is registered at this level, only the queries that are issued in the same session 
+                         can refer to that DataFrame. The session-scoped level will disappear when a Spark session is closed.
+                         
+      2. Global level -  which means these views are available to SQL statements in all Spark sessions.
+      
+      
+How to query Global level views
+
+      select from a global view requires prefixing the view name with key word 'global_temp'
+      spark.sql("select count(*) from global_temp.movies_g").show
+      
+      
+common pattern for interacting with DataFrameWriter
+
+      df.write.format(...).mode(...).option(...).partitionBy(...).bucketBy(...).sortBy(...).save(path)
+      
+      // write data out as CVS format, but using a '#' as 
+      delimitermovies.write.format("csv").option("sep", "#").save("/tmp/output/csv")
+      
+      // write data out using overwrite save 
+      modemovies.write.format("csv").mode("overwrite").option("sep", "#").save("/tmp/output/csv")
+      
+      
+::note::
+
+      One of the important options in the DataFrameWriter class is the save mode, 
+      which controls how Spark will handle the situation when the specified output folder already exists.
+      
+Different types of save mode ?
+
+      1. append     - This appends the DataFrame data to the list of files that already exist at the specified destination location.
+      
+      2. overwrite  - This completely overwrites any data files that already exist at the specified destination location 
+                      with the data in the DataFrame. 
+                      
+      3. error  or errorIfExists or default - This is the default mode. If the specified destination location exists, 
+                                              then DataFrameWriter will throw an error.
+                                                   
+      4. ignore     - If the specified destination location exists, then simply do nothing. 
+                      In other words, silently don’t write out the data in the DataFrame.   
+                      
+How many no of files will be created when you save your DataFrame to External or HDFS file system
+
+      Its upto number partition are there in DataFrame. 
+      
+How will you reduce multiple partition to one partition
+
+      We have to use coalesce function. sample df.coalesce(1).  This function accepts no of partition as input param
+      
+      
+What is the use of partitionBy 
+
+      We can partition the records based on particular column. For example if record contains column with value as year then 
+      if we use partitionBy(yearColumn) then records will partioned based on number of year. when we save with partionBy then 
+      there will be number of directries based on how many number of distinct year are there in the particular column
+      
+      df.write.partitionBy("produced_year").save("/tmp/output/movies")
+      
+      
+      
+
+
+      
+      
