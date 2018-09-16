@@ -11,3 +11,81 @@ Spark Streaming
                               based on a configurable batching interval and then processes each batch in parallel. 
                               It is fairly obvious that the micro-batching model can’t provide the same level of latency 
                               as the other model. 
+                              In terms of throughput, though, the micro-batch has a much higher rate because 
+                              a batch of data is processed in an optimized manner, and therefore the cost per 
+                              each piece of data is low compared to the other model.
+                              
+                              
+Spark Dstream :  The first generation of the Spark streaming processing engine was introduced in 2012, 
+                 and the main programming abstraction in this engine is called a discretized stream , or DStream. 
+                 The way it works is by employing the micro-batching model to divide the incoming stream of data into batches, 
+                 which are then processed by the Spark batch processing engine. 
+                 This makes a lot of sense when an RDD is the main programming abstraction model. 
+                 Each batch is internally represented by an RDD. 
+                 The number of pieces of data in a batch is a function of the incoming data rate and the batch interval 
+                 
+                 
+Spark Structured Streaming : Structured Streaming is Spark’s second-generation streaming engine. It was designed to be much faster, 
+                             more scalable, and more fault tolerant and to address the shortcomings in the 
+                             first-generation streaming engine. 
+                             It was designed for developers to build end-to-end streaming applications that 
+                             can react to data in real-time using a simple programming model that it is built on top of the optimized 
+                             and solid foundation of the Spark SQL engine.
+
+Spark Streaming Core Concepts : 
+
+              1. Data Source 
+                    1. Kafka Source
+                    2. File Source
+                    3. Socket Source
+                    4. Rate Source
+              2. Processing Logic
+              3. Output Mode
+                    Output modes are a way to tell Structure Streaming how the output data should be written to a sink.
+                    
+                    1. Append Mode    - This is the default mode if output mode is not specified. 
+                                        In this mode, only new rows that were appended to the result table 
+                                        will be sent to the specified output sink.
+                                        
+                    2. Complete Mode  - The entire result table will be written to the output sink.
+                    
+                    3. Update mode    - Only the rows that were updated in the result table will be written to the output sink. 
+                                        For the rows that were not changed, they will not be written out.
+              4. Trigger
+              
+                    Trigger is another important concept to understand. The Structured Streaming engine uses the 
+                    trigger information to determine when to run the provided streaming computation logic in 
+                    your streaming application. 
+                    
+                    1. Not specified - default one it will use micro batch mode.
+                    
+                    2. Fixed Interval - it will also use micro batch mode for every fixed interval time specified
+                    
+                    3. one time -  This trigger type is meant to be used for one-time processing of the available batch of data, 
+                                   and Spark will immediately stop the streaming application once the processing is completed.
+                    
+                    4. continuous - this is a exprimental model in spark 2.3
+                    
+              5. Data Sink
+              
+                    Data sinks are at the opposite end of the data sources. 
+                    They are meant for storing the output of streaming applications. 
+                    It is important to recognize which sinks can support which output mode and whether they are fault tolerant
+                    
+                    1. Kafka Sink
+                    2. File Sink
+                    3. Foreach Sink
+                    4. Console Sink  -  For testing and debuging purpose
+                    5. Memory Sink   -  For testing and debuging purpose
+                    
+                    
+Watermarking : this is nothing but how to handle the data that arrives later point of time means late coming data.
+
+following DataFrame transformations are not supported yet in a streaming DataFrame
+      Multiple aggregations or a chain of aggregations on a streaming DataFrame
+      Limit and take N rows.
+      Distinct transformation. However, there is a way to deduplicate data using a unique identifier.
+      Sorting on a streaming DataFrame without any aggregation.
+                    
+                    
+                    
