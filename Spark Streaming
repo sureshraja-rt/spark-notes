@@ -1,0 +1,13 @@
+Spark Streaming
+---------------
+
+2 Types stream processing model
+
+  1. Record-at-a-time model : The record-at-a-time model does what it sounds like; 
+                              it immediately processes each piece of input data as it arrives. 
+                              As a result, this model provides the lowest possible latency
+                              
+  2. Micro Batching         : The micro-batching model waits and accumulates a small batch of input data 
+                              based on a configurable batching interval and then processes each batch in parallel. 
+                              It is fairly obvious that the micro-batching model can’t provide the same level of latency 
+                              as the other model. 
